@@ -22,3 +22,4 @@ Route::get('/string', function () {
     return 'Esta é uma string de exemplo!';
 });
 
+Route::apiResource('book', 'App\Http\Controllers\BookController');
