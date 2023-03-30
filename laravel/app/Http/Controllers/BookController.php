@@ -40,17 +40,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'name' => 'required|unique:books',
-            'session_id' => 'required'
-        ];
-
-        $feedback = [
-            'required' => 'O campo :attribute é obrigatório',
-            'name.unique' => 'O nome do livro já existe'
-        ];
-
-        $request->validate($rules, $feedback);
+        $request->validate($this->book->rules(), $this->book->feedback());
         //stateless
 
         $book = $this->book->create($request->all());
@@ -98,7 +88,18 @@ class BookController extends Controller
         if ($book === null) {
             return response()->json(['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'], 404);
         }
+        if ($request->method() === 'PATCH') {
+            $dynamicRules = array();
 
+            foreach ($book->rules() as $input => $rule) {
+                if (array_key_exists($input, $request->all())) {
+                    $dynamicRules[$input] = $rule;
+                }
+            }
+            $request->validate($dynamicRules, $book->feedback());
+        } else {
+            $request->validate($book->rules(), $book->feedback());
+        }
         $book->update($request->all());
         return response()->json($book, 200);
     }
@@ -109,7 +110,7 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
         $book = $this->book->find($id);
 

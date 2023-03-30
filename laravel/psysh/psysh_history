@@ -1,0 +1,10 @@
+$user = new App\Model\User();
+$user = new App\Models\User();
+$user->name = 'Alan'
+$user->email = 'alan@gmail.com'
+$user->password = bcrypt('1234')
+var_dump($user->getAttributes)
+var_dump($user->getAttributes())
+$user->save()
+clear
+exit
