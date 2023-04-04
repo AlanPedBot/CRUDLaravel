@@ -1,15 +1,19 @@
 <template>
+   <div>
       <AppBanner/>
-   <div class="main-container">
-        <h1>Seja Bem-Vindo!!!</h1>
+         <div class="main-container">
+            <AppCarousel/>
+         </div>
    </div>
 </template>
 <script>
 import AppBanner from "../components/AppBanner.vue";
+import AppCarousel from '../components/AppCarousel.vue';
 export default{
    name: "AppHome",
    components:{
-      AppBanner
+      AppBanner,
+      AppCarousel,
    }
 }
 </script>

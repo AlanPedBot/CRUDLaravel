@@ -1,13 +1,12 @@
 <template>
-     <AppCarousel/>
+<div class="main-container">
+   <h1>Crie</h1>
+</div>
  </template>
  <script>
-import AppCarousel from "../components/AppCarousel.vue";
 export default{
    name: "AppCreate",
    components:{
-      AppCarousel
    }
 }
 </script>
-///

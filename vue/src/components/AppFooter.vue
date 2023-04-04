@@ -26,7 +26,7 @@ export default{
 #footer{
     height: 200px;
     background: #222;
-    border-top: 4px solid #111;
+    border-top: 5px solid #111;
     color: #429bf4;
     display: flex;
     align-items: center;
