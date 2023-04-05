@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AppHome from '../views/AppHome.vue';
 import AppCreate from '../views/AppCreate.vue';
 import AppRead from '../views/AppRead.vue';
+import AppLogin from '../views/AppLogin.vue';
+import AppRegister from '../views/AppRegister.vue';
 
 const routes = [
   {
@@ -18,6 +20,16 @@ const routes = [
     path: '/buscar',
     name: 'read',
     component: AppRead
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: AppLogin
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: AppRegister
   }
 ];
 

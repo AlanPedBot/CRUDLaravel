@@ -6,6 +6,7 @@
         <router-link to="/">Home</router-link> 
         <router-link to="/adicionar">Adicionar</router-link> 
         <router-link to="/buscar">Buscar</router-link>
+        <router-link to="/login">Logout</router-link>
     </div>
 </template>
     <script>

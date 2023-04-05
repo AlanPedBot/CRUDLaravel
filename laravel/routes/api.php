@@ -29,3 +29,4 @@ Route::prefix('library')->middleware('jwt.auth')->group(function () {
     Route::apiResource('book', 'App\Http\Controllers\BookController');
 });
 Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('register', 'App\Http\Controllers\AuthController@register');

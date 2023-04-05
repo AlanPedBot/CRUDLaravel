@@ -8,3 +8,9 @@ var_dump($user->getAttributes())
 $user->save()
 clear
 exit
+exit
+use User
+use App\Models\User
+$user = User::create(["name"=>"Alan", "email"=> "a@gmail.com", "password"=>bcryp("1234")])
+$user = User::create(["name"=>"Alan", "email"=> "a@gmail.com", "password"=>bcrypt("1234")])
+$user = User::create(["name"=>"Alan", "email"=> "ab@gmail.com", "password"=>bcrypt("1234")])
