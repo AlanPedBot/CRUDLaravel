@@ -78,7 +78,7 @@ export default {
     #create-form{
         max-width: 300px;
         margin: 0 auto;
-        height: 454px; 
+        height: 444px; 
         margin-top: 100px; 
     }
     .input-container{

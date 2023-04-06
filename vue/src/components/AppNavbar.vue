@@ -4,8 +4,8 @@
             <img :src="logo" :alt="alt" id="logo">
         </router-link>
         <router-link to="/">Home</router-link> 
-        <router-link to="/adicionar">Adicionar</router-link> 
-        <router-link to="/buscar">Buscar</router-link>
+        <router-link to="/create">Adicionar</router-link> 
+        <router-link to="/read">Buscar</router-link>
         <a href="/login" @click="logout">Logout</a>
     </div>
 </template>

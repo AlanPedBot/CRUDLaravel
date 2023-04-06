@@ -1,53 +1,98 @@
 <template>
+  <div>
     <div>
-        <!-- <p>Mensagem</p> -->
-        <div>
-            <form id="create-formRead">
-                <div class="input-container">
-                    <label for="name">Nome do Livro:</label>
-                    <input type="text" id="name" placeholder="Digite o nome do livro">
-                </div>
-                <div id="input-container" style="text-align: center;">
-                    <button @click.prevent="create" class="btn-submit">BUSCAR</button>
-                </div>
-            </form>
-            <h3 style="font-weight: bold; margin-bottom: 20px;">Tabela - Livros</h3>
-            <h5 style="margin-bottom: 20px;">Na tabela abaixo é possível verificar quais livros existem no banco de dados</h5>
-            <table>
-  <thead>
-    <tr>
-      <th>Nome do Livro</th>
-      <th>Id da Seção</th>
-      <th>Editar</th>
-      <th>Deletar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(item, index) in apiData" :key="index">
-      <td>{{ item.name }}</td>
-      <td>{{ item.session_id }}</td>
-    </tr>
-  </tbody>
-</table>
+      <form id="create-formRead">
+        <div class="input-container">
+          <label for="name">Nome do Livro:</label>
+          <input type="text" id="name" placeholder="Digite o nome do livro" v-model="searchTerm">
         </div>
+        <div id="input-container" style="text-align: center;">
+          <button @click.prevent="read" class="btn-submit">BUSCAR</button>
+        </div>
+      </form>
+      <h3>Tabela - Livros</h3>
+      <p>Aqui você pode ver e consultar seus livros, além de editar ou deletar um livro!</p>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th width=" 45%">Nome do Livro</th>
+              <th width=" 45%">Id da Seção</th>
+              <th width=" 35%">Editar</th>
+              <th width=" 35%">Deletar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in paginatedData" :key="index">
+              <td>{{ item.name }}</td>
+              <td>{{ item.session_id }}</td>
+              <td ><button class="btn-edit"><a href="">Editar</a></button></td>
+              <td><button class="btn-delete"><a href="">Deletar</a></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="paginate">
+          <button @click="currentPage--" :disabled="currentPage === 1" class="btn-paginate">Anterior</button>
+          <span>{{ currentPage }} de {{ Math.ceil(filteredData.length / itemsPerPage) }}</span>
+          <button @click="currentPage++" :disabled="currentPage === Math.ceil(filteredData.length / itemsPerPage)" class="btn-paginate">Próxima</button>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
+
 <script>
-export default{
-    name: "AppFormRead",
-    data(){
-        return{
-            name:null,
-            session_id:null,
-            msg: null
-        }
+import axios from 'axios';
+
+export default {
+  name: "AppFormRead",
+  data() {
+    return {
+      apiData: [],
+      currentPage: 1,
+      itemsPerPage: 5,
+      searchTerm: '',
+    }
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const url = `http://localhost:/api/library/book?name=${this.searchTerm}`;
+      axios.get(url)
+        .then(response => {
+          this.apiData = response.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
-    // methods:{
-    //     async getIngre
-    // }
+    read() {
+      this.getData();
+    }
+  },
+  computed: {
+    filteredData() {
+      if (!this.searchTerm) {
+        return this.apiData;
+      }
+      return this.apiData.filter(item => item.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    },
+    paginatedData() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.filteredData.slice(startIndex, endIndex);
+    }
+  }
 }
 </script>
+
+
 <style scoped>
+*{
+  font-size: 20px;
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -76,9 +121,50 @@ tr:hover {
 #create-formRead{
         max-width: 300px;
         margin: 0 auto;
-        height: 300px; 
+        height: 200px; 
         margin-top: 30px; 
     }
 
-
+.paginate{
+  text-align: center;
+  margin-top: 20px;
+}
+.btn-paginate{
+  width: 120px;
+  height: 50px;
+  color: #222;
+  font-weight: bolder;
+  background-color: #429bf4;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: solid 2px;
+}
+span{
+  font-size: 20px;
+  font-weight: bold;
+}
+a{
+  text-decoration: none;
+  color: #222;
+}
+.btn-edit{
+  width: 120px;
+  height: 50px;
+  background-color: #008000;
+  font-weight: bold;
+}
+.btn-delete{
+  width: 120px;
+  height: 50px;
+  background-color: #d5362e;
+  font-weight: bold;
+}
+h3{
+  font-size: 40px;
+  font-weight: bold;
+}
+p{
+  font-size: 30px;
+  margin-bottom: 30px;
+}
 </style>

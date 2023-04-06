@@ -55,4 +55,18 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Usuário cadastrado com sucesso'], 201);
     }
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $books = \App\Models\Book::where('name', 'like', '%' . $request->input('name') . '%')->get();
+
+        return response()->json(['data' => $books]);
+    }
 }

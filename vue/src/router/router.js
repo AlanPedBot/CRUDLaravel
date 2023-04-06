@@ -15,7 +15,7 @@ const routes = [
     }
   },
   {
-    path: '/adicionar',
+    path: '/create',
     name: 'create',
     component: AppCreate,
     meta: {
@@ -23,7 +23,7 @@ const routes = [
     }
   },
   {
-    path: '/buscar',
+    path: '/read',
     name: 'read',
     component: AppRead,
     meta: {

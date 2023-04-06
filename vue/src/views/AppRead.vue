@@ -14,3 +14,9 @@ export default{
    }
 }
 </script>
+<style>
+h1{
+   margin-bottom: 50px;
+   margin-top: 30px;
+}
+</style>

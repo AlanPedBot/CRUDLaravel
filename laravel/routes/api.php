@@ -26,6 +26,7 @@ Route::prefix('library')->middleware('jwt.auth')->group(function () {
     Route::post('me', 'App\Http\Controllers\AuthController@me');
     Route::post('logout', 'App\Http\Controllers\AuthController@logout');
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('search', 'App\Http\Controllers\AuthController@search');
     Route::apiResource('book', 'App\Http\Controllers\BookController');
 });
 Route::post('login', 'App\Http\Controllers\AuthController@login');
