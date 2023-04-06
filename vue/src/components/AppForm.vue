@@ -1,15 +1,20 @@
 <template>
     <div>
-        <AppMessage :msg="msg" v-show="msg"/>
         <div>
             <form id="create-form">
+                <div class="message-container"  v-if="showSuccessMessage">
+                    <p>Livro inserido com sucesso</p>
+                </div>
+                <div class="messageError-container"  v-if="showDangerMessage">
+                    <p>Error, preencha todos os campos</p>
+                </div>
                 <div class="input-container">
                     <label for="name">Nome do Livro:</label>
                     <input type="text" id="name" v-model="name" placeholder="Digite o nome do livro">
                 </div>
                 <div class="input-container">
             <label for="seção">Escolha a seção do livro:</label>
-        <select id="select" name="session_id">
+        <select id="select" v-model="session_id">
                     <option value="" selected>Selecione a seção</option>
                     <option value="1">Drama</option>
                     <option value="2">Ficção Cientifica</option>
@@ -24,20 +29,49 @@
                 </select>
             </div>
                 <div id="input-container" style="text-align: center;">
-                    <input type="submit" value="ADICIONAR" name="add" class="btn-submit">
+                    <button @click.prevent="create" class="btn-submit">ADICIONAR</button>
                 </div>
             </form>
         </div>
     </div>
 </template>
 <script>
-import AppMessage from '../components/AppMessage.vue';
-export default{
-    name: "AppForm",
-    components:{
-      AppMessage,
-   }
+import axios from 'axios';
+
+export default {
+  name: "AppForm",
+  data() {
+    return {
+      name: '',
+      session_id: '',
+      showSuccessMessage: false,
+      showDangerMessage: false
+    }
+  },
+  methods: {
+    create() {
+      axios.post('http://localhost:/api/library/book', {
+        name: this.name,
+        session_id: this.session_id,
+      })
+      .then(response => {
+        console.log(response.data);
+        this.showSuccessMessage = true;
+        setTimeout(() => {
+          this.showSuccessMessage = false;
+        }, 3000); // Define o tempo de 5 segundos
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        this.showDangerMessage = true;
+        setTimeout(() => {
+          this.showDangerMessage = false;
+        }, 3000); // Define o tempo de 5 segundos
+      });
+    }
+  }
 }
+
 
 </script>
 <style scoped>

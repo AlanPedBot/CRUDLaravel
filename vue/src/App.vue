@@ -44,7 +44,7 @@ export default {
     #create-form{
         max-width: 300px;
         margin: 0 auto;
-        height: 670px; 
+        height: 750px; 
         margin-top: 30px; 
     }
     .input-container{
@@ -82,9 +82,9 @@ export default {
         color: #222;
     }
     .message-container{
-    color: #004085;
-    background-color: #CCE5FF;
-    border: #B8DAFF;
+    color: #008518;
+    background-color: #cfffcc;
+    border: #b8ffbd;
     border-radius: 5px;
     padding: 10px;
     max-width: 400px;
@@ -98,6 +98,10 @@ export default {
     padding: 10px;
     max-width: 400px;
     margin: 30px auto;
+}
+.link{
+  margin-top: 10px;
+  font-size: 20px;
 }
 </style> 
 

@@ -6,13 +6,18 @@
         <router-link to="/">Home</router-link> 
         <router-link to="/adicionar">Adicionar</router-link> 
         <router-link to="/buscar">Buscar</router-link>
-        <router-link to="/login">Logout</router-link>
+        <a href="/login" @click="logout">Logout</a>
     </div>
 </template>
     <script>
     export default{
         name: "AppNavbar",
-        props: ["logo", "alt"]
+        props: ["logo", "alt"],
+        methods: {
+    logout() {
+      localStorage.removeItem('token');
+    }
+  }
     }
     
     </script>

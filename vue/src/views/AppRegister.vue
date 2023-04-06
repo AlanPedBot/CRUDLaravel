@@ -23,6 +23,7 @@
       <div class="input-container">
         <label for="password">Confirmar Senha:</label>
         <input type="password" v-model="passwordConfirmation" placeholder="Confirme a senha" required>
+        <p class="link">Fazer login! <a href="/login">Logar!</a></p>
       </div>
       <div id="input-container" style="text-align: center;">
         <button @click.prevent="register" class="btn-submit">CADASTRAR</button>
@@ -65,14 +66,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.message-container{
-    color: #004085;
-    background-color: #CCE5FF;
-    border: #B8DAFF;
-    border-radius: 5px;
-    padding: 10px;
-    max-width: 400px;
-    margin: 30px auto;
-}
-</style>
