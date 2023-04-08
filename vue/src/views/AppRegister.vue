@@ -10,15 +10,15 @@
       </div>
       <div class="input-container">
         <label for="name">Nome:</label>
-        <input type="text" name="name" v-model="name" placeholder="Digite o nome" required>
+        <input type="text" v-model="name" placeholder="Digite o nome" required>
       </div>
       <div class="input-container">
         <label for="email">Email:</label>
-        <input type="email" name="email" v-model="email" placeholder="Digite o email" required>
+        <input type="email"  v-model="email" placeholder="Digite o email" required>
       </div>
       <div class="input-container">
         <label for="password">Senha:</label>
-        <input type="password" name="password" v-model="password" placeholder="Digite a senha" required>
+        <input type="password"  v-model="password" placeholder="Digite a senha" required>
       </div>
       <div class="input-container">
         <label for="password">Confirmar Senha:</label>

@@ -1,46 +1,50 @@
 <template>
   <div>
-    <div>
-      <form id="create-formRead">
-        <div class="input-container">
-          <label for="name">Nome do Livro:</label>
-          <input type="text" id="name" placeholder="Digite o nome do livro" v-model="searchTerm">
-        </div>
-        <div id="input-container" style="text-align: center;">
-          <button @click.prevent="read" class="btn-submit">BUSCAR</button>
-        </div>
-      </form>
-      <h3>Tabela - Livros</h3>
-      <p>Aqui você pode ver e consultar seus livros, além de editar ou deletar um livro!</p>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th width=" 45%">Nome do Livro</th>
-              <th width=" 45%">Id da Seção</th>
-              <th width=" 35%">Editar</th>
-              <th width=" 35%">Deletar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in paginatedData" :key="index">
-              <td>{{ item.name }}</td>
-              <td>{{ item.session_id }}</td>
-              <td ><button class="btn-edit"><a href="">Editar</a></button></td>
-              <td><button class="btn-delete"><a href="">Deletar</a></button></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="paginate">
-          <button @click="currentPage--" :disabled="currentPage === 1" class="btn-paginate">Anterior</button>
-          <span>{{ currentPage }} de {{ Math.ceil(filteredData.length / itemsPerPage) }}</span>
-          <button @click="currentPage++" :disabled="currentPage === Math.ceil(filteredData.length / itemsPerPage)" class="btn-paginate">Próxima</button>
-        </div>
+    <form id="create-formRead">
+    <div class="input-container">
+      <label for="name">Nome do Livro:</label>
+      <input v-model="searchTerm" type="text" placeholder="Digite o nome do livro">
+      <!-- <button @click="getData()" class="btn-submit">BUSCAR</button> -->
+    </div>
+  </form>
+    <table>
+      <thead>
+        <tr>
+          <!-- <th>ID</th> -->
+          <th width="45%">Nome do livro</th>
+          <th width="45%">Seção do livro</th>
+          <th width="15%">Editar</th>
+          <th width="15%">Deletar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="book in paginatedData" :key="book.id">
+          <!-- <td>{{ book.id }}</td> -->
+          <td>{{ book.name }}</td>
+          <td>{{ book.session_id }}</td>
+          <td><button @click="updateBook(book)" class="btn-edit">Editar</button></td>
+          <td><button @click="deleteBook(book.id)" class="btn-delete">Deletar</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination-container">
+      <button :disabled="currentPage === 1" @click="currentPage--" class="btn-paginate">Anterior</button>
+      <div v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'pagination-number': true, active: currentPage === page }">
+        <span v-if="page === 1 || page === pageCount || Math.abs(currentPage - page) <= 2 || (Math.abs(currentPage - page) <= 3 && (page === 2 || page === pageCount - 1))">{{ page }}</span>
+        <span v-else>...</span>
       </div>
+      <button :disabled="currentPage === pageCount" @click="currentPage++" class="btn-paginate">Próximo</button>
+    </div>
+
+    <div v-if="Object.keys(editBookData).length">
+      <h2 style="margin-top: 30px; text-align: center; font-size: 40px; font-weight: bold; margin-bottom: 20px;">Editar livro</h2>
+          <input v-model="editBookData.name" type="text" placeholder="Nome do Livro" class="input-edit">
+          <input v-model="editBookData.session_id" type="text" placeholder="Seção do livro" class="input-edit">
+          <button @click="saveEditedBook" class="btn-save">Salvar</button>
+          <button @click="cancelEdit" class="btn-cancel">Cancelar</button>
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -52,6 +56,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
       searchTerm: '',
+      editBookData: {},
     }
   },
   created() {
@@ -68,23 +73,65 @@ export default {
           console.error(error);
         });
     },
-    read() {
-      this.getData();
-    }
+    updateBook(book) {
+      this.editBookData = {
+        id: book.id,
+        name: book.name,
+        session_id: book.session_id
+      };
+    },
+    saveEditedBook() {
+      const url = `http://localhost:/api/library/book/${this.editBookData.id}`;
+      axios.patch(url, {
+        name: this.editBookData.name,
+        session_id: this.editBookData.session_id,
+      })
+      .then(response => {
+        this.editBookData = {};
+        this.getData();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    },
+    cancelEdit() {
+      this.editBookData = {};
+    },
+    deleteBook(id) {
+      const url = `http://localhost:/api/library/book/${id}`;
+      axios.delete(url)
+        .then(response => {
+          this.getData();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    goToPage(page) {
+    this.currentPage = page;
+  }
   },
   computed: {
-    filteredData() {
-      if (!this.searchTerm) {
-        return this.apiData;
-      }
-      return this.apiData.filter(item => item.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
-    },
-    paginatedData() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.filteredData.slice(startIndex, endIndex);
+  filteredData() {
+    return this.apiData.filter(book => book.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+  },
+  pageCount() {
+    return Math.ceil(this.filteredData.length / this.itemsPerPage);
+  },
+  pages() {
+    const pages = [];
+    for (let i = 1; i <= this.pageCount; i++) {
+      pages.push(i);
     }
+    return pages;
+  },
+  paginatedData() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredData.slice(startIndex, endIndex);
   }
+}
+
 }
 </script>
 
@@ -167,4 +214,77 @@ p{
   font-size: 30px;
   margin-bottom: 30px;
 }
+.input-edit{
+  margin-left: 10px;
+}
+.btn-save{
+  width: 120px;
+  height: 50px;
+  background-color: #0d80ae;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.btn-cancel{
+  width: 120px;
+  height: 50px;
+  background-color: #d5362e;
+  font-weight: bold;
+  margin-left: 10px;
+}
+input{
+  padding: 10px 15px;
+  width: 450px;
+  border-radius: 10px;
+    }
+    .pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-paginate {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-paginate:hover {
+  background-color: #666;
+  color: #fff;
+}
+
+.active {
+  background-color: #333;
+  color: #fff;
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-number {
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.pagination-number.active {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+
 </style>

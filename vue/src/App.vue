@@ -40,6 +40,7 @@ export default {
       font-size: 42px;
       margin-bottom: 1px;
       color:#222 ;
+      font-weight: bold;
     }
     #create-form{
         max-width: 300px;
