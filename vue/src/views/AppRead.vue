@@ -14,7 +14,7 @@ export default{
    }
 }
 </script>
-<style>
+<style scoped>
 h1{
    margin-bottom: 50px;
    margin-top: 30px;

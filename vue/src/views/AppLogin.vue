@@ -2,6 +2,9 @@
   <div>
     <h1 style="margin-top: 40px;">Login</h1>
     <form id="create-form" @submit.prevent="login">
+      <div class="messageError-container"  v-if="showDangerMessage">
+          <p>Login ou senha inválidos</p>
+      </div>
       <div class="input-container">
         <label for="email">Email:</label>
         <input type="email" v-model="email" placeholder="Digite o email" required>
@@ -25,7 +28,8 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      showDangerMessage: false
     }
   },
   methods: {
@@ -43,6 +47,10 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.showDangerMessage = true;
+          setTimeout(() => {
+          this.showDangerMessage = false;
+        }, 5000);
         });
     }
   },

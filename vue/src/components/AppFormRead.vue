@@ -1,12 +1,25 @@
 <template>
   <div>
     <form id="create-formRead">
+      <div class="message-container"  v-if="showSuccessEditMessage">
+        <p>Atualização realizada com sucesso</p>
+    </div>
+    <div class="messageError-container"  v-if="showDangerEditMessage">
+        <p>Seção inválida</p>
+    </div>
+    <div class="message-container"  v-if="showSuccessDeleteMessage">
+        <p>Livro deletado com sucesso</p>
+    </div>
+    <div class="messageError-container"  v-if="showDangerDeleteMessage">
+        <p>Erro ao deletar o livro</p>
+    </div>
     <div class="input-container">
       <label for="name">Nome do Livro:</label>
       <input v-model="searchTerm" type="text" placeholder="Digite o nome do livro">
       <!-- <button @click="getData()" class="btn-submit">BUSCAR</button> -->
     </div>
   </form>
+  <h3>Tabela Livros</h3>
     <table>
       <thead>
         <tr>
@@ -35,7 +48,6 @@
       </div>
       <button :disabled="currentPage === pageCount" @click="currentPage++" class="btn-paginate">Próximo</button>
     </div>
-
     <div v-if="Object.keys(editBookData).length">
       <h2 style="margin-top: 30px; text-align: center; font-size: 40px; font-weight: bold; margin-bottom: 20px;">Editar livro</h2>
           <input v-model="editBookData.name" type="text" placeholder="Nome do Livro" class="input-edit">
@@ -57,6 +69,10 @@ export default {
       itemsPerPage: 5,
       searchTerm: '',
       editBookData: {},
+      showSuccessEditMessage: false,
+      showDangerEditMessage: false,
+      showSuccessDeleteMessage: false,
+      showDangerDeleteMessage: false
     }
   },
   created() {
@@ -86,12 +102,20 @@ export default {
         name: this.editBookData.name,
         session_id: this.editBookData.session_id,
       })
-      .then(response => {
+      .then(() => {
         this.editBookData = {};
         this.getData();
+        this. showSuccessEditMessage = true;
+        setTimeout(() => {
+        this.showSuccessEditMessage = false;
+      }, 5000);
       })
       .catch(error => {
         console.error(error);
+        this.showDangerEditMessage = true;
+        setTimeout(() => {
+        this.showDangerEditMessage = false;
+      }, 3000);
       });
     },
     cancelEdit() {
@@ -100,11 +124,19 @@ export default {
     deleteBook(id) {
       const url = `http://localhost:/api/library/book/${id}`;
       axios.delete(url)
-        .then(response => {
+        .then(() => {
           this.getData();
+          this.showSuccessDeleteMessage = true;
+        setTimeout(() => {
+        this.showSuccessDeleteMessage = false;
+      }, 3000);
         })
         .catch(error => {
           console.error(error);
+          this.showDangerDeleteMessage = true;
+        setTimeout(() => {
+        this.showDangerDeleteMessage = false;
+      }, 5000);
         });
     },
     goToPage(page) {
@@ -137,9 +169,6 @@ export default {
 
 
 <style scoped>
-*{
-  font-size: 20px;
-}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -169,7 +198,7 @@ tr:hover {
         max-width: 300px;
         margin: 0 auto;
         height: 200px; 
-        margin-top: 30px; 
+        margin-top: 30px;
     }
 
 .paginate{
@@ -211,7 +240,6 @@ h3{
   font-weight: bold;
 }
 p{
-  font-size: 30px;
   margin-bottom: 30px;
 }
 .input-edit{
@@ -240,6 +268,7 @@ input{
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 198px;
 }
 
 .btn-paginate {

@@ -12,7 +12,7 @@ class Book extends Model
     public function rules()
     {
         return [
-            'name' => 'required|unique:books,name,' . $this->id . '',
+            'name' => 'required:books,name,' . $this->id . '',
             'session_id' => 'required'
         ];
     }
