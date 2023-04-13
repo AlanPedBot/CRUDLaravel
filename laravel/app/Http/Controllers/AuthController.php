@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function login(Request $request): JsonResponse
     {
         $credentials = $request->all(['email', 'password']);
         $token = auth('api')->attempt($credentials);
@@ -20,21 +25,34 @@ class AuthController extends Controller
         }
         return $token;
     }
-    public function logout()
+    /**
+     * @return string
+     */
+    public function logout(): string
     {
         auth('api')->logout();
         return response()->json(['msg' => 'Logout realizado com sucesso!']);
     }
-    public function refresh()
+    /**
+     * @return string
+     */
+    public function refresh(): string
     {
         $token = auth('api')->refresh();
         return response()->json(['token' => $token]);
     }
-    public function me()
+    /**
+     * @return string
+     */
+    public function me(): string
     {
         return response()->json(auth()->user());
     }
-    public function register(Request $request)
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function register(Request $request): string
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -56,7 +74,11 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Usuário cadastrado com sucesso'], 201);
     }
-    public function search(Request $request)
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function search(Request $request): string
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

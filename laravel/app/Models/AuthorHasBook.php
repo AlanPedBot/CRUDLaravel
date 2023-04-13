@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class AuthorHasBook extends Model
 {
     use HasFactory;
+    protected $fillable = ['author_id', 'book_id'];
     public function author(): HasMany
     {
         return $this->hasMany(Author::class);

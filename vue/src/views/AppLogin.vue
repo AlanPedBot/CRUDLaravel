@@ -24,6 +24,9 @@
 <script>
 import axios from "axios";
 
+// Define o cabeçalho padrão com o token
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+
 export default {
   data() {
     return {
@@ -42,6 +45,9 @@ export default {
           // Armazene o token no Local Storage
           localStorage.setItem('token', response.data.token);
 
+          // Define o cabeçalho padrão com o novo token
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+
           // Redirecione o usuário para a página de perfil
           this.$router.push('/');
         })
@@ -59,6 +65,9 @@ export default {
 
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (token) {
+        // Define o cabeçalho padrão com o token existente
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
         // O token existe no Local Storage, permita o acesso à rota
         next();
       } else {
@@ -71,6 +80,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>
