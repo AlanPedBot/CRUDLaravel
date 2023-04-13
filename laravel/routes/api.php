@@ -18,15 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/string', function () {
-    return 'Esta é uma string de exemplo!';
-});
-
 Route::prefix('library')->middleware('jwt.auth')->group(function () {
-    Route::post('me', 'App\Http\Controllers\AuthController@me');
-    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
-    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
-    Route::post('search', 'App\Http\Controllers\AuthController@search');
+    Route::apiResource('me', 'App\Http\Controllers\AuthController@me');
+    Route::apiResource('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::apiResource('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::apiResource('search', 'App\Http\Controllers\AuthController@search');
     Route::apiResource('book', 'App\Http\Controllers\BookController');
 });
 Route::post('login', 'App\Http\Controllers\AuthController@login');

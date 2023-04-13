@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     create() {
-      axios.post('http://localhost:/api/library/book', {
+      axios.post(process.env.BASE_URL_API +'/library/book', {
         name: this.name,
         session_id: this.session_id,
       })

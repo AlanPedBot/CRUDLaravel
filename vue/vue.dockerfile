@@ -5,6 +5,8 @@ RUN npm install
 COPY ./ .
 
 COPY --chown=node:node package.json .
+COPY .env /usr/src/app/
+
 
 RUN npm install
 RUN npm install vue-router

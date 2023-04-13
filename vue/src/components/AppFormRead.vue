@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     getData() {
-      const url = `http://localhost:/api/library/book?name=${this.searchTerm}`;
+      const url = process.env.BASE_URL_API + `/library/book?name=${this.searchTerm}`;
       axios.get(url)
         .then(response => {
           this.apiData = response.data;
@@ -97,7 +97,7 @@ export default {
       };
     },
     saveEditedBook() {
-      const url = `http://localhost:/api/library/book/${this.editBookData.id}`;
+      const url = process.env.BASE_URL_API +`/library/book/${this.editBookData.id}`;
       axios.patch(url, {
         name: this.editBookData.name,
         session_id: this.editBookData.session_id,
@@ -122,7 +122,7 @@ export default {
       this.editBookData = {};
     },
     deleteBook(id) {
-      const url = `http://localhost:/api/library/book/${id}`;
+      const url = process.env.BASE_URL_API +`/library/book/${id}`;
       axios.delete(url)
         .then(() => {
           this.getData();
