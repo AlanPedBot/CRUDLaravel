@@ -28,6 +28,10 @@
                     <option value="10">Suspense</option>
                 </select>
             </div>
+            <div class="input-container">
+                    <label for="name">URL da imagem:</label>
+                    <input type="text" id="url" v-model="img_url" placeholder="Digite o nome do livro">
+                </div>
                 <div id="input-container" style="text-align: center;">
                     <button @click.prevent="create" class="btn-submit">ADICIONAR</button>
                 </div>
@@ -44,6 +48,7 @@ export default {
     return {
       name: '',
       session_id: '',
+      img_url: '',
       showSuccessMessage: false,
       showDangerMessage: false
     }
@@ -53,6 +58,7 @@ export default {
       axios.post(process.env.BASE_URL_API +'/library/book', {
         name: this.name,
         session_id: this.session_id,
+        img_url: this.img_url,
       })
       .then(response => {
         console.log(response.data);
@@ -78,7 +84,7 @@ export default {
     #create-form{
         max-width: 300px;
         margin: 0 auto;
-        height: 444px; 
+        height: 600px; 
         margin-top: 100px; 
     }
     .input-container{

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->unsignedBigInteger('book_borrowed_id');
             $table->unsignedBigInteger('session_id');
+            $table->string('img_url', 255);
             $table->foreign('book_borrowed_id')->references('id')->on('books_borrowed');
             $table->foreign('session_id')->references('id')->on('sessions');
             $table->timestamps();

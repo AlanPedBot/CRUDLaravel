@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Jobs\SendNewBookNotification;
 
 class BookController extends Controller
 {
@@ -44,6 +45,7 @@ class BookController extends Controller
         //stateless
 
         $book = $this->book->create($request->all());
+        SendNewBookNotification::dispatch($book);
         return response()->json($book, 201);
     }
 
@@ -120,5 +122,13 @@ class BookController extends Controller
 
         $book->delete();
         return response()->json(['msg' => 'O livro foi removida com sucesso!'], 200);
+    }
+    public function lastbook()
+    {
+        $lastBooks = $this->book->orderByDesc('id')->take(5)->get();
+        if ($lastBooks->isEmpty()) {
+            return response()->json(['erro' => 'Não foi possível encontrar livros'], 404);
+        }
+        return response()->json($lastBooks, 200);
     }
 }

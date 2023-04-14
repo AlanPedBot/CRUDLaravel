@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Book extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'session_id'];
+    protected $fillable = ['name', 'session_id', 'img_url'];
     public function rules()
     {
         return [
             'name' => 'required:books,name,' . $this->id . '',
-            'session_id' => 'required'
+            'session_id' => 'required',
+            'img_url' => 'required'
         ];
     }
     public function feedback()

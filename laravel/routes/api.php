@@ -23,6 +23,7 @@ Route::prefix('library')->middleware('jwt.auth')->group(function () {
     Route::apiResource('logout', 'App\Http\Controllers\AuthController@logout');
     Route::apiResource('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::apiResource('search', 'App\Http\Controllers\AuthController@search');
+    Route::get('lastbook', 'App\Http\Controllers\BookController@lastbook');
     Route::apiResource('book', 'App\Http\Controllers\BookController');
 });
 Route::post('login', 'App\Http\Controllers\AuthController@login');
