@@ -3,17 +3,17 @@
         <div style="height: 800px; display: flex;">
             <div class="container">
                 <div class="container-fluid">
-                    <div id="sinopse">
+                    <div id="title">
                         <h1 style="font-weight: bold;">Ultimos livros inseridos no banco de dados</h1>
                     </div>
-                    <p style="font-size: 25px; margin-top: 30px;"> No carrousel abaixo é possível ver de forma dinamica quais foram os <b>5 ultimos livros</b> que foram adicionados ao banco de dados do sistema da biblioteca
+                    <p style="font-size: 25px; margin-top: 30px;"> No carrousel abaixo é possível ver de forma dinamica quais foram os <b>5 ultimos livros</b> que foram adicionados ao banco de dados do sistema da biblioteca, onde a cada novo livro inserido uma mensagem é enviada aos usuários avisando sobre o livro novo que chegou e está disponível.
                     </p>
                     <div class="mx-auto text-center" style="width: 50%; margin-top: 40px;">
                         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
                             <div v-for="(url, index) in apiData" :key="index"
                                 :class="['carousel-item', index === 0 ? 'active' : '']">
-                                <img :src="url" style="width: 550px; height: 700px;">
+                                <img :src="url" style="width: 550px; height: 650px;">
                             </div>
                             </div>
                             <div class="d-flex justify-content-between">
@@ -76,7 +76,7 @@ export default {
       -webkit-tap-highlight-color: transparent;
       min-height: 100vh;
   }
- #sinopse{
+ #title{
     margin-top: 50px;
  }
 
