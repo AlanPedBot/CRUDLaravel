@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     use HasFactory;
+    /**
+     * @var array
+     */
     protected $fillable = ['name'];
 }

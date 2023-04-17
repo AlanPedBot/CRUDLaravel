@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Publisher extends Model
 {
     use HasFactory;
+    /**
+     * @var array
+     */
     protected $fillable = ['name'];
 }

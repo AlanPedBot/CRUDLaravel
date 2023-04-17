@@ -9,7 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Book extends Model
 {
     use HasFactory;
+    /**
+     * @var array
+     */
     protected $fillable = ['name', 'session_id', 'img_url'];
+    /**
+     * 
+     *
+     * @return array 
+     */
     public function rules()
     {
         return [
@@ -18,6 +26,11 @@ class Book extends Model
             'img_url' => 'required'
         ];
     }
+    /**
+     * 
+     *
+     * @return array 
+     */
     public function feedback()
     {
         return [
@@ -25,10 +38,20 @@ class Book extends Model
             'name.unique' => 'O nome do livro já existe'
         ];
     }
+    /**
+     * 
+     *
+     * @return HasMany
+     */
     public function bookBorrowed(): HasMany
     {
         return $this->hasMany(BookBorrowed::class);
     }
+    /**
+     * 
+     *
+     * @return HasMany
+     */
     public function session(): HasMany
     {
         return $this->hasMany(Session::class);

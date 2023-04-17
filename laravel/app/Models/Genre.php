@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Genre extends Model
 {
     use HasFactory;
+    /**
+     * @var array
+     */
     protected $fillable = ['name'];
 }
